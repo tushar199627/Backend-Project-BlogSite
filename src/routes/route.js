@@ -16,6 +16,6 @@ router.post("/authors", AuthorController.createAuthor  )
 
 //Blog Routes
 
-//router.post("/blogs", BlogController.createBlog)
-
+router.post("/blogs", BlogController.createBlog)
+router.get("/getblogs", BlogController.getBlogData)
 module.exports=router;
