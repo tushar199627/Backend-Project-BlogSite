@@ -18,12 +18,17 @@ const createAuthor= async function (req, res) {
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)) {
             res.status(400).send({status: false,message: `Email should be a valid email address`});
         }
+    
         if(!password){
             return res.status(400).send({status:false,message:"author password is required"})
         }
         
+
+        
+        
             let authorCreated =await AuthorModel.create(req.body)
-            res.status(201).send({status:true,date:authorCreated}) 
+            res.status(201).send({status:true,date:authorCreated, msg:"created"}) 
+        
         }catch (err)
         {
             return res.status(500).send({status:false,msg:err.message})
