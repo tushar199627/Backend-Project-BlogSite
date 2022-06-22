@@ -1,4 +1,5 @@
-const AuthorModel = require("../models/authorModel")
+const AuthorModel = require("../models/authorModel");
+const blogModel = require("../models/blogModel");
 const BlogModel = require("../models/blogModel")
 
 //create blog
@@ -56,5 +57,35 @@ const blogs= async function (req, res) {
     res.status(500).send({ error: err.message })
   }
 };
+
+
+//delete route
+
+const deleblogs = async function (req,res){
+    try{ 
+    let blogId = req.params.blogId;
+    if(!blogId){
+        res.status(400).send({status:false,msg:"blog id is not valid"})
+    }
+    const blog = await BlogModel.findOne({_id:blogId, isDeleted:false});
+    if (!blog){
+      return res.status(404).send("blog not found");
+    }
+
+    const deletedBlog = await BlogModel.updateOne({_id:blogId},{$set:{isDeleted:true}},
+        {new:true});
+    res.status(201).send({data:deletedBlog, msg:"deleted successfully"});
+  } 
+  catch(err){
+    res.status(500).send(err.message)
+  }
+   }
+
+
+
+
+
+
 module.exports.createBlog=createBlog
 module.exports.blogs=blogs
+module.exports.deleblogs=deleblogs
