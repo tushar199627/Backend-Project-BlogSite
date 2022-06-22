@@ -54,11 +54,11 @@ const blogs= async function (req, res) {
     if(data.length===0){
         res.status(404).send({status:false,msg:"No data Found"})
     }else{
-        let id=req.params.authorId
+        let Id=req.params.authorId
         let catagorykey=req.params.catagory
         let tagkey=req.params.tags
         let subcategorykey=req.params.subcategory
-    let newdata=await BlogModel.find({isDeleted:false,ispublished:true , $or:[{authorId:id},{catagory:catagorykey},{tags:tagkey},{subcategory:subcategorykey}]})
+    let newdata=await BlogModel.find({isDeleted:false,ispublished:true , $or:[{authorId:Id},{catagory:catagorykey},{tags:tagkey},{subcategory:subcategorykey}]})
     if(newdata.length===0){
         res.status(404).send({status:false,msg:"No blog Found"})
     }else{
