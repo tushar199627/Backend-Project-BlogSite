@@ -19,5 +19,6 @@ router.get("/getblogs", BlogController.blogs)
 //delte routes
 
 router.delete("/deleteblog/:blogId",BlogController.deleblogs)
+router.delete("/deletequery/",BlogController.deleteQuery)
 
 module.exports=router;
