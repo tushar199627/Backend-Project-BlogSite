@@ -130,8 +130,8 @@ const deleblogs = async function (req,res){
         return res.status(404).send({ status: false, msg: " Blog doesn't exist "})
         }
   
-        let deletedUser = await BlogModel.updateOne( {authorId: authorId},
-             { $set: { isDeleted: true , deleteAt:new Date()} },
+        let deletedUser = await BlogModel.updateMany( {authorId: authorId},
+             { $set: { isDeleted: true} },
               { new: true })
   
         if (deletedUser.isDeleted == true) {
