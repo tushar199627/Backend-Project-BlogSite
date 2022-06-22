@@ -13,25 +13,24 @@ const blogSchema = new mongoose.Schema( {
         ref: "author",
         required:true
     },
-    tags: { type: [String],
-    },
+    tags:[String],
     catagory: {type:[String],
         required:true
     },
-    subcategory: {
-        type: [String],
-    },
-    publishedAt: Date,
+    subcategory: [String],
+    publishedAt:{type: Date,
+        default:null},
     ispublished: {type: Boolean,
                 default:false
     },
-    deleteAt: Date,
+    deleteAt: {type:Date,
+        default:null},
     isDeleted:{type: Boolean,
         default:false
     },
 }, {timestamps: true });
 
 
-module.exports = mongoose.model('Blog', blogSchema) //users
+module.exports = mongoose.model('Blog', blogSchema) 
 
 

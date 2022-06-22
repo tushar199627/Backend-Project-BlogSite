@@ -5,25 +5,34 @@ const BlogModel = require("../models/blogModel")
 //create blog
 const createBlog= async function (req, res) {
     try{
-    const {authorId,title, body,catagory} = req.body
+    const {authorId,title, body,catagory, ispublished,tags,subcategory} = req.body
     if(!authorId){
         res.status(400).send({status:false, msg:"authorId field is required"})
      } else if(!title){
         res.status(400).send({status:false,msg:"title field is required"})
      } else if(!body){
         res.status(400).send({status:false,msg:"body is required"})
-     } else if(!catagory){
+     }else
+      if(!catagory){
         res.status(400).send({status:false,msg:"catagory is required"})
     }else{
         const author=await AuthorModel.findById(authorId);
         if(!author){
             res.status(400).send({status:false,msg:"Author Id is not valid"})
-            
-            
-        }else{
-            let blogCreated = await BlogModel.create(req.body)
-            res.status(201).send({status:true, data: blogCreated})
         }
+            let blogss={
+                title,
+                body,
+                authorId,
+                catagory,
+                tags,
+                subcategory,
+                ispublished: ispublished ? ispublished:false,
+                publishedAt : ispublished ? new Date():null
+            }
+            let blogCreated = await BlogModel.create(blogss)
+            res.status(201).send({status:true, data: blogCreated})
+        
     }
 
 }catch (err) {
