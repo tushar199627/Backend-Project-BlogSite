@@ -15,6 +15,9 @@ router.post("/authors", AuthorController.createAuthor  )
 router.post("/blogs", BlogController.createBlog)
 router.get("/getblogs", BlogController.blogs)
 
+//update blog
+router.post("/updateblogs/:blogId", BlogController.updateblogs)
+
 
 //delte routes
 

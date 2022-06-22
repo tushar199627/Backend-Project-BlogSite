@@ -49,27 +49,43 @@ const createBlog= async function (req, res) {
 //Get Blogs
 
 const blogs= async function (req, res) {
+
     try{
-    let data = await BlogModel.find({$and:[{isDeleted:false},{ispublished:true}]})
-    if(data.length===0){
-        res.status(404).send({status:false,msg:"No data Found"})
-    }else{
-        let Id=req.params.authorId
-        let catagorykey=req.params.catagory
-        let tagkey=req.params.tags
-        let subcategorykey=req.params.subcategory
-    let newdata=await BlogModel.find({isDeleted:false,ispublished:true , $or:[{authorId:Id},{catagory:catagorykey},{tags:tagkey},{subcategory:subcategorykey}]})
-    if(newdata.length===0){
-        res.status(404).send({status:false,msg:"No blog Found"})
-    }else{
-        res.status(200).send({status:true,data:newdata})
+        let authorId=req.query.author_Id
+        let catagory=req.query.catagory
+        let tagkey=req.query.tags
+        let sub=req.query.subcategory
+        let list=await BlogModel.find({isDeleted:false,ispublished:true})
+        if(!list.length){res.status(404).send({status:false,msg:"blog not found"})}
+        let bloglist=await BlogModel.find({isDeleted:false,ispublished:true , $or:[{author_Id:authorId},{catagory:catagory},{tags:tagkey},{subcategory:sub}]})
+        if(bloglist.length===0){
+            res.status(404).send({status:false,msg:"No blog Found"})
+        }else{
+            res.status(200).send({status:true,data:bloglist})
+        }
     }
+     catch (err) {
+        
+        return res.status(500).send({ status:false, msg: err.message })
+      }
+    };
+
+    //update blog
+
+    const updateblogs = async function (req, res) {
+        try {
+            let blogid = req.body.Id;
+    
+            let updatedblogs = await BlogModel.findOneAndUpdate({ Id: blogid }, { $set: req.body },
+                 {new:true}, )
+                 console.log(updatedblogs)
+            res.status(200).send({ status: updatedblogs, data: updatedblogs });
+            
+        }
+        catch (error) {
+            res.status(500).send({ msg: "Error", error: error.message })
+        }
     }
-}catch (err) {
-    console.log(err.message)
-    res.status(500).send({ error: err.message })
-  }
-};
 
 
 //delete route
@@ -139,3 +155,4 @@ module.exports.createBlog=createBlog
 module.exports.blogs=blogs
 module.exports.deleblogs=deleblogs
 module.exports.deleteQuery=deleteQuery
+module.exports.updateblogs=updateblogs
