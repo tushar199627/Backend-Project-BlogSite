@@ -7,11 +7,24 @@ const createAuthor= async function (req, res) {
         if(!title){
             return res.status(400).send({status:false,message:"author title is required"})
         }
+        if(title!=="Mr"){
+            if(title!=="Miss"){
+              if(title!=="Mrs"){
+                return res.status(400).send({status:false,message:"Should be Mr , Miss , Mrs"})
+              } 
+            }
+        }
         if(!firstName){
             return res.status(400).send({status:false,message:"author first name is required"})
         }
+        if(!/^[a-zA-Z]+$/.test(firstName)){
+            res.status(400).send({status: false,message: `First name should be a Character`});
+        }
         if(!lastName){
             return res.status(400).send({status:false,message:"author last name is required"})
+        }
+        if(!/^[a-zA-Z]+$/.test(lastName)){
+            res.status(400).send({status: false,message: `Last name should be a Character`});
         }
         if(!emailId){
             return res.status(400).send({status:false,message:"author email is required"})
@@ -22,6 +35,9 @@ const createAuthor= async function (req, res) {
     
         if(!password){
             return res.status(400).send({status:false,message:"author password is required"})
+        }
+        if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
+            res.status(400).send({status: false,message: `password should contain atleastone number or one alphabet and should be 8 character long`});
         }
         
             let authorCreated =await AuthorModel.create(req.body)
