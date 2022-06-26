@@ -18,6 +18,6 @@ router.put("/updateblogs/:blogId", auth.authToken, BlogController.updateblogs)
 
 //delte routes
 router.delete("/deleteblog/:blogId", auth.authToken, BlogController.deleblogs)
-router.delete("/deletequery/", auth.authToken, BlogController.deleteQuery)
+router.delete("/deletequery/", BlogController.deleteQuery)
 
 module.exports = router;
