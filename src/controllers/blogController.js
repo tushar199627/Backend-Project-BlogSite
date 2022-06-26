@@ -55,8 +55,13 @@ const blogs = async function (req, res) {
         let catagory = req.query.catagory
         let tagkey = req.query.tags
         let sub = req.query.subcategory
+        let Token=req.authorId
         let list = await BlogModel.find({ isDeleted: false, ispublished: true })
         if (!list.length) { res.status(404).send({ status: false, msg: "blog not found" }) }
+
+        if (list.authorId.toString() != Token) {
+            return res.status(400).send({ status: false, msg: "Not authorised" });
+        }
         let bloglist = await BlogModel.find({ isDeleted: false, ispublished: true, $or: [{ authorId: authorId }, { catagory: catagory }, { tags: tagkey }, { subcategory: sub }] })
         if (bloglist.length === 0) {
             res.status(404).send({ status: false, msg: "No blog Found" })
@@ -75,9 +80,9 @@ const blogs = async function (req, res) {
 const updateblogs = async function (req, res) {
     try {
         let id = req.params.blogId;
-        let authorToken = req.body.authorId
+        let Token = req.authorId
 
-        if (!authorToken) {
+        if (!Token) {
             res.status(400).send({ status: false, msg: "not a valid author Id" })
         }
 
@@ -108,7 +113,7 @@ const updateblogs = async function (req, res) {
             if (!tags) { return res.status(400).send({ status: false, message: "tag is not valid" }) }
         }
 
-        if (list1.authorId.toString() != authorToken) {
+        if (list1.authorId.toString() != Token) {
             return res.status(400).send({ status: false, msg: "Not authorised" });
         }
 
@@ -117,7 +122,6 @@ const updateblogs = async function (req, res) {
             title: blogData.title,
             body: blogData.body,
             publishedAt: new Date(),
-            isDeleted: true
         },
             { new: true })
         if (list == null) {
@@ -137,7 +141,7 @@ const updateblogs = async function (req, res) {
 const deleblogs = async function (req, res) {
     try {
         let blogId = req.params.blogId;
-        let authorToken = req.body.authorId
+        let Token = req.authorId
         if (!blogId) {
             res.status(400).send({ status: false, msg: "blog id is not valid" })
         }
@@ -145,7 +149,7 @@ const deleblogs = async function (req, res) {
         if (!blog) {
             return res.status(404).send("blog not found");
         }
-        if (blog.authorId.toString() != authorToken) {
+        if (blog.authorId.toString() != Token) {
             return res.status(404).send({ status: false, msg: "Not authorised" });
         }
 
