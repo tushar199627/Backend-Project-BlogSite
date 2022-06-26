@@ -51,13 +51,13 @@ const createBlog = async function (req, res) {
 const blogs = async function (req, res) {
 
     try {
-        let authorId = req.query.author_Id
+        let authorId = req.query.authorId
         let catagory = req.query.catagory
         let tagkey = req.query.tags
         let sub = req.query.subcategory
         let list = await BlogModel.find({ isDeleted: false, ispublished: true })
         if (!list.length) { res.status(404).send({ status: false, msg: "blog not found" }) }
-        let bloglist = await BlogModel.find({ isDeleted: false, ispublished: true, $or: [{ author_Id: authorId }, { catagory: catagory }, { tags: tagkey }, { subcategory: sub }] })
+        let bloglist = await BlogModel.find({ isDeleted: false, ispublished: true, $or: [{ authorId: authorId }, { catagory: catagory }, { tags: tagkey }, { subcategory: sub }] })
         if (bloglist.length === 0) {
             res.status(404).send({ status: false, msg: "No blog Found" })
         } else {
