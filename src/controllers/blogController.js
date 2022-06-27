@@ -55,13 +55,11 @@ const blogs = async function (req, res) {
         let catagory = req.query.catagory
         let tagkey = req.query.tags
         let sub = req.query.subcategory
-        let Token=req.authorId
+    
         let list = await BlogModel.find({ isDeleted: false, ispublished: true })
         if (!list.length) { res.status(404).send({ status: false, msg: "blog not found" }) }
 
-        if (list.authorId.toString() != Token) {
-            return res.status(400).send({ status: false, msg: "Not authorised" });
-        }
+       
         let bloglist = await BlogModel.find({ isDeleted: false, ispublished: true, $or: [{ authorId: authorId }, { catagory: catagory }, { tags: tagkey }, { subcategory: sub }] })
         if (bloglist.length === 0) {
             res.status(404).send({ status: false, msg: "No blog Found" })
