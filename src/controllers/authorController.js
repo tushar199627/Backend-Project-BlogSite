@@ -40,6 +40,12 @@ const createAuthor = async function (req, res) {
             res.status(400).send({ status: false, message: `password should contain atleastone number or one alphabet and should be 8 character long` });
         }
 
+        let emailAllready=await AuthorModel.findOne({emailId})
+        if(emailAllready){
+            res.status(400).send({ status: false, message: `${emailId} already exist` });
+        }
+        
+
         let authorCreated = await AuthorModel.create(req.body)
         res.status(201).send({ status: true, date: authorCreated, msg: "created" })
 
