@@ -18,36 +18,36 @@ const createAuthor = async function (req, res) {
             return res.status(400).send({ status: false, message: "author first name is required" })
         }
         if (!/^[a-zA-Z]+$/.test(firstName)) {
-            res.status(400).send({ status: false, message: `First name should be a Character` });
+           return res.status(400).send({ status: false, message: `First name should be a Character` });
         }
         if (!lastName) {
             return res.status(400).send({ status: false, message: "author last name is required" })
         }
         if (!/^[a-zA-Z]+$/.test(lastName)) {
-            res.status(400).send({ status: false, message: `Last name should be a Character` });
+         return   res.status(400).send({ status: false, message: `Last name should be a Character` });
         }
         if (!emailId) {
             return res.status(400).send({ status: false, message: "author email is required" })
         }
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailId)) {
-            res.status(400).send({ status: false, message: `Email should be a valid email address` });
+           return res.status(400).send({ status: false, message: `Email should be a valid email address` });
         }
 
         if (!password) {
             return res.status(400).send({ status: false, message: "author password is required" })
         }
         if (!/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password)) {
-            res.status(400).send({ status: false, message: `password should contain atleastone number or one alphabet and should be 8 character long` });
+          return  res.status(400).send({ status: false, message: `password should contain atleastone number or one alphabet and should be 9 character long` });
         }
 
         let emailAllready=await AuthorModel.findOne({emailId})
         if(emailAllready){
-            res.status(400).send({ status: false, message: `${emailId} already exist` });
+          return  res.status(400).send({ status: false, message: `${emailId} already exist` });
         }
         
 
         let authorCreated = await AuthorModel.create(req.body)
-        res.status(201).send({ status: true, date: authorCreated, msg: "created" })
+        return res.status(201).send({ status: true, date: authorCreated, msg: "created" })
 
     } catch (err) {
         return res.status(500).send({ status: false, msg: err.message })
@@ -84,7 +84,6 @@ const loginAuthor = async function (req, res) {
             "functionup-radon-secretKey"
         );
         res.setHeader("x-auth-token", token);
-        res.status(200).send({ status: true, token: token })
 
         return res.status(200).send({ status: true, token: token, msg: "author logged in successfully" });
     }
