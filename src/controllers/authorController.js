@@ -3,7 +3,9 @@ const jwt = require("jsonwebtoken");
 
 const createAuthor = async function (req, res) {
     try {
-        let { title, firstName, lastName, emailId, password } = req.body
+        let { title, fname, lname, emailId, password } = req.body
+
+   //=================================================Validation starts===================================================================     
         if (!title) {
             return res.status(400).send({ status: false, message: "author title is required" })
         }
@@ -14,16 +16,16 @@ const createAuthor = async function (req, res) {
                 }
             }
         }
-        if (!firstName) {
+        if (!fname) {
             return res.status(400).send({ status: false, message: "author first name is required" })
         }
-        if (!/^[a-zA-Z]+$/.test(firstName)) {
+        if (!/^[a-zA-Z]+$/.test(fname)) {
            return res.status(400).send({ status: false, message: `First name should be a Character` });
         }
-        if (!lastName) {
+        if (!lname) {
             return res.status(400).send({ status: false, message: "author last name is required" })
         }
-        if (!/^[a-zA-Z]+$/.test(lastName)) {
+        if (!/^[a-zA-Z]+$/.test(lname)) {
          return   res.status(400).send({ status: false, message: `Last name should be a Character` });
         }
         if (!emailId) {
@@ -44,10 +46,10 @@ const createAuthor = async function (req, res) {
         if(emailAllready){
           return  res.status(400).send({ status: false, message: `${emailId} already exist` });
         }
-        
+       //=================================================validation ends================================================================= 
 
         let authorCreated = await AuthorModel.create(req.body)
-        return res.status(201).send({ status: true, date: authorCreated, msg: "created" })
+        return res.status(201).send({ status: true, date: authorCreated, msg: "Author Successfully Created" })
 
     } catch (err) {
         return res.status(500).send({ status: false, msg: err.message })
@@ -59,16 +61,18 @@ const createAuthor = async function (req, res) {
 
 const loginAuthor = async function (req, res) {
     try {
-        let authorName = req.body.emailId;
+        let emailId = req.body.emailId;
         let password = req.body.password;
-        if (!authorName) {
-            return res.status(400).send({ status: false, msg: "email is required" })
+
+//==========================================validation starts===========================================================
+        if (!emailId) {
+            return res.status(400).send({ status: false, msg: "Email is required" })
         }
         if (!password) {
             return res.status(400).send({ status: false, msg: "password is required" })
         }
-
-        let author = await AuthorModel.findOne({ emailId: authorName, password: password });
+//=======================================validation ends================================================================================
+        let author = await AuthorModel.findOne({ emailId: emailId, password: password });
         if (!author)
             return res.status(400).send({
                 status: false,
@@ -83,7 +87,7 @@ const loginAuthor = async function (req, res) {
             },
             "functionup-radon-secretKey"
         );
-        res.setHeader("x-auth-token", token);
+        res.setHeader("x-api-key", token);
 
         return res.status(200).send({ status: true, token: token, msg: "author logged in successfully" });
     }

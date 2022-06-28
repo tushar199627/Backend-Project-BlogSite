@@ -5,10 +5,10 @@ const authorSchema = new mongoose.Schema({
         type: String,
         enum: ["Mr", "Miss", "Mrs"]
     },
-    firstName:{type:String,
+    fname:{type:String,
         required:true 
     },
-    lastName:{ type: String,
+    lname:{ type: String,
         required:true
     },
     emailId: {type:String,

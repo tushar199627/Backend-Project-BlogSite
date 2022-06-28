@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 
 const authToken = async function (req, res, next) {
     try {
-        let token = req.headers["x-auth-token"];
+        let token = req.headers["x-api-key" || "X-API-KEY"];
         if (!token) {
             return res.status(400).send({ status: false, msg: "token not valid or provide the token to create a blog" })
         }

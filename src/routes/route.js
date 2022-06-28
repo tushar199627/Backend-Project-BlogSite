@@ -11,13 +11,13 @@ router.post("/login", AuthorLogin.loginAuthor)
 
 //Blog Routes
 router.post("/blogs", auth.authToken, BlogController.createBlog)
-router.get("/getblogs", auth.authToken, BlogController.blogs)
+router.get("/blogs", auth.authToken, BlogController.blogs)
 
 //update blog
-router.put("/updateblogs/:blogId", auth.authToken, BlogController.updateblogs)
+router.put("/blogs/:blogId", auth.authToken, BlogController.updateblogs)
 
 //delte routes
-router.delete("/deleteblog/:blogId", auth.authToken, BlogController.deleblogs)
-router.delete("/deletequery/", BlogController.deleteQuery)
+router.delete("/blogs/:blogId", auth.authToken, BlogController.deleblogs)
+router.delete("/blogs",auth.authToken, BlogController.deleteQuery)
 
 module.exports = router;
